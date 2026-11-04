@@ -1,4 +1,4 @@
-# Inhouse AI — private AI integration & GPU sizing
+# Inferhouse — private AI, built in-house
 
 Static website with a VRAM / hardware sizing calculator and model advisor.
 No build step, no dependencies: plain HTML, CSS and JavaScript.
@@ -29,7 +29,7 @@ At the top of the `<script>` block in `index.html`:
   (`https://formspree.io/f/xxxxxxx`) so requests arrive by email without the visitor's mail app.
   Leave empty to use a `mailto:` link.
 
-Also update the brand name ("Inhouse AI"), the About text, and the `GPUS` table prices.
+Also update the brand name ("Inferhouse"), company number, address, phone, the About text, and the `GPUS` table prices.
 Model data lives in the `MODELS` array; add models with their `config.json` values
 (`num_hidden_layers`, `num_key_value_heads`, `head_dim`).
 
