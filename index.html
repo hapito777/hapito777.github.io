@@ -301,6 +301,77 @@ tr.off td{opacity:.5}
 footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:.86rem}
 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* =============== DASHBOARD PREVIEW =============== */
+#dashboard{background:var(--surface)}
+.dash-widget{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;height:clamp(500px,65vh,720px)}
+.dash-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--surface-2);flex-shrink:0}
+.dash-brand{font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:8px;color:var(--ink)}
+.dash-topbar-right{display:flex;gap:8px}
+
+.dash-body{display:flex;flex:1;min-height:0;overflow:hidden;border-radius:0}
+
+/* sidebar: session list */
+.dash-sidebar{width:220px;border-right:1px solid var(--line);display:flex;flex-direction:column;background:var(--surface-2);flex-shrink:0;overflow:hidden}
+#dashSessionList{flex:1;overflow-y:auto;padding:4px 8px 12px}
+.dash-sess-item{padding:10px;border-radius:8px;cursor:pointer;margin-bottom:4px;background:var(--surface);border:1px solid transparent;display:flex;flex-direction:column;gap:3px;transition:border-color .15s}
+.dash-sess-item:hover{border-color:var(--line)}
+.dash-sess-item.active{border-color:var(--ink)}
+.dash-sess-item .sess-title{font-weight:700;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dash-sess-item .sess-preview{font-size:.76rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
+.dash-sess-item .sess-time{font-size:.68rem;color:var(--muted)}
+
+/* main chat area */
+.dash-main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+.dash-messages{flex:1;overflow-y:auto;padding:20px 24px;scroll-behavior:smooth}
+.msg{display:flex;flex-direction:column;padding:14px;border-radius:8px;margin-bottom:12px;max-width:100%}
+.msg.user{background:var(--teal-soft);border-left:3px solid var(--ink)}
+.msg.ai{background:var(--surface);border:1px solid var(--line)}
+.msg strong{font-size:.82rem;color:var(--muted);display:block;margin-bottom:6px}
+.msg-body p{margin:0 0 8px;font-size:.93rem;line-height:1.55}
+.msg-body p:last-child{margin-bottom:0}
+.msg-body ul,.msg-body ol{margin:4px 0;padding-left:20px;font-size:.93rem}
+.msg-body li{margin:2px 0}
+
+.dash-input-row{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--line);background:var(--surface)}
+.dash-input-row input{flex:1;font-size:.93rem;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-family:inherit}
+.dash-input-row input:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 3px var(--teal-soft)}
+
+/* right panel: knowledge index */
+.dash-kb{width:240px;border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--bg);flex-shrink:0;overflow:hidden}
+#dashKbEntries{flex:1;overflow-y:auto;padding:0 8px 8px}
+.kb-entry{padding:10px;border-radius:6px;margin-bottom:6px;background:var(--surface);border:1px solid var(--line)}
+.kb-entry .kb-topic{font-weight:700;font-size:.82rem;color:var(--ink)}
+.kb-entry .kb-summary{font-size:.75rem;color:var(--muted);margin-top:3px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.kb-entry .kb-meta{font-size:.68rem;color:var(--muted);margin-top:6px}
+.kb-sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:0 8px 8px}
+.kb-session-card{padding:10px;border-radius:6px;background:var(--surface);border:1px solid var(--line)}
+.kb-session-card .card-title{font-weight:600;font-size:.78rem;color:var(--ink)}
+.kb-session-card .card-msgs{font-size:.68rem;color:var(--muted);margin-top:2px}
+
+/* knowledge bar */
+.dash-knowledge-bar{padding:14px 20px;border-top:1px solid var(--line);background:var(--surface-2)}
+
+/* responsive */
+@media(max-width:900px){
+  .dash-body{flex-direction:column}
+  .dash-sidebar,#dashboardSidebar{display:none;position:absolute;left:0;top:0;bottom:0;z-index:40;width:280px;box-shadow:4px 0 20px rgba(0,0,0,.3)}
+  .dash-sidebar.open{display:flex}
+  .dash-kb{display:none}
+  .dash-widget{height:auto;min-height:450px}
+}
+
+@media(max-width:600px){
+  .dash-topbar{flex-wrap:wrap;gap:8px}
+  .dash-input-row{flex-direction:column;padding:12px}
+  .dash-input-row .btn{align-self:stretch}
+}
+
+/* dashboard explain sections */
+.dash-explain{margin-top:10px}
+.dash-explain h3{font-size:1.08rem;font-weight:700;margin-bottom:10px;color:var(--ink)}
+.dash-explain li{margin:6px 0;color:var(--muted);line-height:1.5}
+.dash-explain strong{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -311,10 +382,12 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
     <nav class="links" aria-label="Main">
       <a href="#start">Choose your setup</a>
       <a href="#services">Services</a>
-      <a href="#packages">Pricing</a>
-      <a href="#models">Models</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Contact</a>
+       <a href="#packages">Pricing</a>
+       <a href="#models">Models</a>
+       <a href="#dashboard">Dashboard</a>
+       <a href="#faq">FAQ</a>
+       <a href="#contact">Contact</a>
+     <a href="#dashboard">Dashboard</a>
     </nav>
     <a class="btn btn-primary btn-sm" href="#contact">Book a consultation</a>
   </div>
@@ -362,6 +435,83 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
         <li><h3>Automate routine work</h3><p>Sort support tickets, pull data from invoices and forms, and route requests.</p></li>
         <li><h3>Translate</h3><p>Documents and messages across dozens of languages, kept confidential.</p></li>
       </ul>
+    </div>
+  </section>
+
+  <!-- DASHBOARD PREVIEW & LIVE DEMO -->
+  <section id="dashboard" style="background:var(--surface)">
+    <div class="wrap">
+      <h2>Your team's AI workspace — live preview</h2>
+      <p class="section-intro">This is exactly what your company gets. A secure, private chat interface where every session builds on the last. No data leaves your infrastructure. Try it now — type a message and press Enter.</p>
+
+      <!-- Live Dashboard Widget -->
+      <div class="dash-widget" id="dashWidget">
+        <!-- Top bar -->
+        <div class="dash-topbar">
+          <span class="dash-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Private AI Workspace</span>
+          <div class="dash-topbar-right">
+            <button type="button" class="btn btn-ghost btn-sm dash-btn-new" id="dashNewSession">+ New Session</button>
+            <button type="button" class="btn btn-ghost btn-sm dash-btn-clear" id="dashClearAll">Reset All Knowledge</button>
+          </div>
+        </div>
+
+        <div class="dash-body">
+          <!-- Sidebar: Sessions -->
+          <aside class="dash-sidebar" id="dashSidebar">
+            <h3 style="font-size:.92rem;font-weight:700;margin:4px 8px 10px;color:var(--muted)">SESSIONS</h3>
+            <div id="dashSessionList" style="flex:1;overflow-y:auto;scrollbar-width:thin"></div>
+          </aside>
+
+          <!-- Main chat area -->
+          <main class="dash-main">
+            <div class="dash-messages" id="dashMessages">
+              <div class="msg ai" id="dashWelcome">
+                <strong>Inferhouse AI</strong>
+                <div class="msg-body"><p>Hello! I'm your private AI workspace. Click <strong>+ New Session</strong> to start a fresh conversation, or just type below to chat right now. Every message builds towards a shared <strong>Knowledge Index</strong> your team can query.</p><p>Try asking: "How does knowledge work?" or create a new session and keep working — you'll see the index grow.</p></div>
+              </div>
+            </div>
+            <div class="dash-input-row">
+              <input type="text" id="dashInput" placeholder="Type your message..." aria-label="Message input" autocomplete="off">
+              <button type="button" class="btn btn-primary btn-sm dash-send" id="dashSend">Send</button>
+            </div>
+          </main>
+
+          <!-- Right panel: Knowledge Index -->
+          <aside class="dash-kb" id="dashKBPanel">
+            <h3 style="font-size:.92rem;font-weight:700;margin:4px 8px 10px;color:var(--muted)">KNOWLEDGE INDEX</h3>
+            <div style="padding:8px"><div class="kb-summary-box" id="dashKbSummary">Click <strong>+ New Session</strong> and start working. Each session is summarised and added to your company's knowledge index below.</div></div>
+            <div id="dashKbEntries" style="flex:1;overflow-y:auto;padding:0 8px 8px"></div>
+          </aside>
+        </div>
+
+        <!-- Knowledge Index Progress Bar -->
+        <div class="dash-knowledge-bar">
+          <div style="display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-bottom:4px"><span>Organisation Knowledge Collected</span><span id="kbCount">0 sessions</span></div>
+          <div class="bar memmap-cap" style="border-radius:4px"><div class="seg k kb-fill" id="kbFill" style="width:0"></div></div>
+        </div>
+      </div>
+
+      <!-- Explanation rows under the demo -->
+      <div class="two dash-explain" style="margin-top:32px">
+        <div class="panel" style="padding:16px">
+          <h3 style="font-size:1rem;margin-bottom:8px">How sessions accumulate knowledge</h3>
+          <ol style="margin:0;padding-left:18px;font-size:.91rem;color:var(--muted)">
+            <li><strong>New Session:</strong> Opens a clean chat workspace.</li>
+            <li><strong>You work:</strong> Your questions, AI answers, and any files are stored in that session.</li>
+            <li><strong>Auto-summarise:</strong> When you start a new session, all prior conversations from the previous session are collapsed into a summary — so the AI always knows your context.</li>
+            <li><strong>Knowledge Index:</strong> Every summary feeds into one living index. That's your company's growing knowledge base.</li>
+          </ol>
+        </div>
+        <div class="panel" style="padding:16px">
+          <h3 style="font-size:1rem;margin-bottom:8px">Why this matters for your company</h3>
+          <ul style="margin:0;padding-left:18px;font-size:.91rem;color:var(--muted)">
+            <li><strong>Your data stays private</strong> — no API calls to the cloud. Everything runs inside your infrastructure.</li>
+            <li><strong>Knowledge compounds daily</strong> — every session adds to a retrievable knowledge index anyone can query.</li>
+            <li><strong>Everything is securable</strong> — access controls, audit logs, and role-based permissions are built in by default.</li>
+            <li><strong>No vendor lock-in</strong> — open models, open data formats. Your knowledge is yours.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1457,6 +1607,242 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   onQuantChange(); updateConc(); onModelChange();
+
+  /* =============== DASHBOARD PREVIEW INTERACTIVE =============== */
+  (function(){
+    const STORAGE_KEY = 'inferhouse_dash_data';
+    function loadData(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||null; }catch(e){return null;} }
+    function saveData(d){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }catch(e){} }
+
+    let data = loadData() || { sessions:[], knowledgeIndex:[], lastSummary:'' };
+    if(!data.lastSummary) data.lastSummary = '';
+    const nowISO = ()=> new Date().toISOString();
+    const genId = ()=>'s_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+    // Pre-seed one session if completely empty — shows the concept immediately
+    if(data.sessions.length===0){
+      data.sessions.push({
+        id:genId(), title:'Welcome · Knowledge Demo', preview:'How sessions accumulate knowledge...',
+        messages:[{role:'ai',content:'Hello! I\'m your private AI workspace. Type below to start a conversation — every message here is saved to a session, summarised, and fed into your knowledge index (right panel). Try creating a new session or keep chatting right here!',timestamp:nowISO()}],
+        summary:'Welcome to the private AI workspace demo. User explores session-based chat, knowledge index, and how conversations accumulate.',createdAt:nowISO(), updatedAt:nowISO()
+      });
+    }
+
+    const $sessList=$('dashSessionList');
+    const $msgs=$('dashMessages');
+    const $input=$('dashInput');
+    const $kbEntries=$('dashKbEntries');
+    const $kbSummary=$('dashKbSummary');
+    const $count=$('kbCount');
+    const $fill=$('kbFill');
+
+    function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+    function timeLabel(iso){
+      if(!iso) return '';
+      const d=new Date(iso);
+      return d.toLocaleDateString('en-UK',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('en-UK',{hour:'2-digit',minute:'2-digit'});
+    }
+
+    function msgHtml(msg,isPreview){
+      if(isPreview) return escHtml(msg.content);
+      const lines=escHtml(msg.content).split('\n').filter(l=>l!=='');
+      return '<div class="msg-body"><p>'+lines.join('</p><p>')+'</p></div>';
+    }
+
+    function renderSessions(){
+      $sessList.innerHTML='';
+      // Most recent first
+      const sorted=[...data.sessions].sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));
+      sorted.forEach(s=>{
+        const div=document.createElement('div');
+        div.className='dash-sess-item'+(s.id===data.activeSessionId?' active':'');
+        div.dataset.sid=s.id;
+        div.innerHTML='<span class="sess-title">'+escHtml(s.title||'Untitled')+'</span>'+'<span class="sess-preview">'+escHtml((s.preview||'(empty)')).slice(0,60)+'...</span><span class="sess-time">'+timeLabel(s.updatedAt)+'</span>';
+        div.addEventListener('click',()=>switchSession(s.id));
+        $sessList.appendChild(div);
+      });
+    }
+
+    function renderMessages(){
+      if(!$msgs) return;
+      const active=data.sessions.find(s=>s.id===data.activeSessionId);
+      // For demo: show welcome and then messages from all sessions progressively? No, just active session
+      let html='';
+      if(active&&active.messages.length>0){
+        active.messages.forEach(m=>{
+          const cls=m.role==='user'?'msg user':'msg ai';
+          const label=m.role==='user'?'You':'Inferhouse AI';
+          html+='<div class="'+cls+'"><strong>'+label+'</strong>'+(m.role==='ai'?msgHtml(m):'<div class="msg-body"><p>'+escHtml(m.content)+'</p></div>')+'</div>';
+        });
+      } else {
+        html='<div class="msg ai" id="dashWelcome"><strong>Inferhouse AI</strong><div class="msg-body"><p>Hello! I\'m your private AI workspace. Type a message to start working — sessions accumulate into a knowledge index your team can query.</p></div></div>';
+      }
+      $msgs.innerHTML=html;
+      if($msgs) $msgs.scrollTop=$msgs.scrollHeight;
+    }
+
+    function renderKnowledgeIndex(){
+      // Build from all sessions
+      const entries=data.knowledgeIndex||[];
+      $kbEntries.innerHTML='';
+      if(entries.length===0){
+        $kbSummary.innerHTML='Click <strong>+ New Session</strong> and start working. Each session is summarised and added to your company\'s knowledge index below.';
+      } else {
+        let ghtml='';
+        entries.forEach(e=>{
+          ghtml+='<div class="kb-entry"><div class="kb-topic">'+escHtml(e.topic)+'</div><div class="kb-summary">'+escHtml(e.summary).slice(0,140)+'...</div><div class="kb-meta">Session · '+timeLabel(e.addedAt)+'</div></div>';
+        });
+        $kbEntries.innerHTML=ghtml;
+        $kbSummary.innerHTML='<strong>'+entries.length+' topics</strong> accumulated across your '+data.sessions.length+' session'+(data.sessions.length!==1?'s':'')+'. This knowledge index grows every day.';
+      }
+      // Update bar
+      const n=data.sessions.length;
+      const pct=Math.min(100,Math.max(2,n*15));
+      $fill.style.width=pct+'%';
+      $count.textContent=n+' session'+(n!==1?'s':'');
+    }
+
+    function createSession(){
+      // Before creating new, summarize the current active one
+      const active=data.sessions.find(s=>s.id===data.activeSessionId);
+      if(active&&active.messages.length>0){
+        active.summary=summarizeMessages(active.messages);
+        // Add to knowledge index (dedup simple)
+        data.knowledgeIndex.push({
+          topic:active.title||'Conversation',
+          summary:active.summary,
+          addedAt:nowISO()
+        });
+      }
+      data.activeSessionId=genId();
+      const ns={id:data.activeSessionId,title:'New Session',preview:'Start typing to begin...',messages:[],createdAt:nowISO(),updatedAt:nowISO()};
+      data.sessions.push(ns);
+      saveData(data);
+      renderAll();
+    }
+
+    function summarizeMessages(messages){
+      const userText=messages.filter(m=>m.role==='user').map(m=>m.content).join(' ');
+      if(!userText) return 'Empty session';
+      // Simple keyword-based summary for demo
+      const words=['knowledge','process','document','team','project','data','plan','report','meeting','analysis','strategy','policy','product','customer','research','development'];
+      let topic='Discussion';
+      for(const w of words){ if(userText.toLowerCase().includes(w)){
+        if(w==='knowledge') topic='Knowledge & Insights';
+        else if(w==='document') topic='Document Review';
+        else if(w==='team') topic='Team Collaboration';
+        else if(w==='project') topic='Project Work';
+        else if(w==='data') topic='Data Analysis';
+        else if(w==='plan'||w==='strategy') topic='Planning & Strategy';
+        else if(w==='report') topic='Reporting';
+        else if(w==='meeting') topic='Meeting Summary';
+        else if(w==='analysis') topic='Analysis';
+        else if(w==='policy') topic='Policy Review';
+        else if(w==='product') topic='Product Details';
+        else if(w==='customer') topic='Customer Insights';
+        else if(w==='research') topic='Research Findings';
+        else if(w==='development') topic='Development';
+        else topic=w.charAt(0).toUpperCase()+w.slice(1);
+        break;
+      }}
+      return topic+': '+userText.slice(0,200)+(userText.length>200?'...':'');
+    }
+
+    function updateSessionPreview(session){
+      if(!session) return;
+      const lastUser=session.messages.filter(m=>m.role==='user').pop();
+      session.preview=(lastUser?lastUser.content.slice(0,60)+'...':'Start typing...');
+      if(lastUser&&lastUser.content.length<30) session.title=lastUser.content.replace(/[^a-zA-Z ]/g,'').slice(0,40)||session.title;
+    }
+
+    function renderAll(){
+      renderSessions();
+      renderMessages();
+      renderKnowledgeIndex();
+    }
+
+    // Auto-scroll chat on load
+    setTimeout(function(){ if($msgs) $msgs.scrollTop=$msgs.scrollHeight; },100);
+
+    // New Session button
+    $('dashNewSession').addEventListener('click', createSession);
+
+    // Save/clear all
+    $('dashClearAll').addEventListener('click', function(){
+      if(confirm('Reset all sessions and knowledge? This will clear everything stored in this browser.')){
+        localStorage.removeItem(STORAGE_KEY);
+        data={sessions:[],knowledgeIndex:[],lastSummary:''};
+        createSession();
+        alert('Dashboard has been reset.');
+        renderAll();
+      }
+    });
+
+    function switchSession(id){
+      data.activeSessionId=id;
+      saveData(data);
+      renderSessions();
+      renderMessages();
+    }
+
+    function sendMessage(text){
+      if(!text.trim()) return;
+      const active=data.sessions.find(s=>s.id===data.activeSessionId);
+      if(!active) return;
+
+      // Add user message
+      active.messages.push({role:'user',content:text.trim(),timestamp:nowISO()});
+      updateSessionPreview(active);
+      active.updatedAt=nowISO();
+
+      // Simulate AI response after short delay (shows the flow to user)
+      const btnEl=document.querySelector('#dashSend');
+      if(btnEl){btnEl.disabled=true;btnEl.textContent='...';}
+      $msgs.scrollTop=$msgs.scrollHeight;
+      renderMessages();
+
+      setTimeout(function(){
+        // Generate contextual simulated response
+        const lower=text.toLowerCase();
+        let response;
+
+        if(lower.includes('session')&&lower.includes('new')){
+          response='Click the <strong>+ New Session</strong> button anytime you want a fresh workspace. Each session preserves context independently while adding to your cumulative knowledge index.';
+        } else if(lower.includes('knowledge')||lower.includes('index')){
+          response='Your knowledge index is exactly what you see on the right panel. Every message in every session gets summarised — these summaries accumulate into one searchable, queryable knowledge base for your whole company.';
+        } else if(lower.includes('private')||lower.includes('secure')||lower.includes('safe')){
+          response='Everything in this dashboard stays entirely within your browser (stored via localStorage). In production, all data runs inside your own infrastructure — no API calls to any third party. Your knowledge is completely secure and you maintain full control.';
+        } else if(lower.includes('hello')||lower.includes('hi')||lower.includes('hey')){
+          response='Welcome! Try asking me about how sessions work, or start a new session and keep chatting to see how the knowledge index accumulates over multiple conversations.';
+        } else {
+          const pool=['Interesting — I\'ll add this to your knowledge base. As more sessions accumulate, patterns emerge across different areas of your company.','This adds valuable context to what we already know. Your knowledge index is growing — each new session brings fresh insights into one central place.','Noted. In a real deployment, this conversation would be indexed alongside your documents, allowing the AI to cross-reference and provide richer answers.','Your team\'s knowledge compounds with every interaction. Over time, this creates a living index of everything your company has learned and discussed.','This session is building up valuable context. When you start a new one tomorrow, the previous summaries will inform what I \'know\' about your company — while keeping daily work clean and focused.','Excellent addition to the knowledge base. The private workspace format lets any team member build expertise independently, but all that expertise flows into one shared index.');
+          response=pool[Math.floor(Math.random()*pool.length)];
+        }
+
+        active.messages.push({role:'ai',content:response,timestamp:nowISO()});
+        updateSessionPreview(active);
+        active.updatedAt=nowISO();
+        saveData(data);
+        renderAll();
+        $input.focus();
+      },600);
+    }
+
+    // Keyboard Enter to send
+    $input.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage($input.value);$input.value='';}
+    });
+
+    $('dashSend').addEventListener('click',function(){
+      sendMessage($input.value);
+      $input.value='';
+    });
+
+    // Initial render
+    renderAll();
+  })();
+
 });
 </script>
 </body>
